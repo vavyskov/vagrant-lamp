@@ -1,0 +1,123 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# The "2" in Vagrant.configure set the Vagrant configuration version
+Vagrant.configure("2") do |config|
+  
+  
+  
+  ## https://docs.vagrantup.com
+  ## https://www.engineyard.com/blog/building-a-vagrant-box-from-start-to-finish
+  ## https://technology.amis.nl/2017/10/19/create-debian-vm-with-docker-host-using-vagrant-automatically-include-guest-additions/
+
+  
+  
+  ## https://app.vagrantup.com
+  ## https://app.vagrantup.com/debian
+  ## https://app.vagrantup.com/centos
+  config.vm.box = "debian/contrib-stretch64"
+  
+  
+  
+  ## ???
+  config.vm.hostname = "lamp"
+  
+  
+  
+  #config.vm.box = "hashicorp/precise64"
+  #config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
+  # Disable automatic box update checking. If you disable this, then
+  # boxes will only be checked for updates when the user runs
+  # `vagrant box outdated`. This is not recommended.
+  # config.vm.box_check_update = false
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine. In the example below,
+  # accessing "localhost:8080" will access port 80 on the guest machine.
+  # NOTE: This will enable public access to the opened port
+  # config.vm.network "forwarded_port", guest: 80, host: 8080
+
+  # Create a forwarded port mapping which allows access to a specific port
+  # within the machine from a port on the host machine and only allow access
+  # via 127.0.0.1 to disable public access
+  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
+
+  # Create a private network, which allows host-only access to the machine
+  # using a specific IP.
+  # config.vm.network "private_network", ip: "192.168.33.10"
+
+  # Create a public network, which generally matched to bridged network.
+  # Bridged networks make the machine appear as another physical device on
+  # your network.
+  # config.vm.network "public_network"
+
+  # Share an additional folder to the guest VM
+  config.vm.synced_folder "../workspace/", "/home/vagrant/workspace"
+  #config.vm.synced_folder "../workspace/", "/home/vagrant/workspace", :mount_options => ["dmode=777","fmode=666"]
+  
+  
+  
+  #config.vm.synced_folder "...", "/var/www", id: "vagrant-root", :owner => "www-data", :group => "www-data"
+  
+  #config.vm.synced_folder "...", "/var/www", {
+  #  :mount_options => ['dmode=777','fmode=777'],
+  #  :owner => "www-data",
+  #  :group => "www-data"
+  #}
+  #development_config.vm.synced_folder "...", "/var/www", {
+  #  :mount_options => ['dmode=777','fmode=777'],
+  #  :owner => "www-data",
+  #  :group => "www-data"
+  #}
+  
+  
+  
+  ## https://github.com/beetboxvm/beetbox/blob/master/Vagrantfile (VirtualBox, VMware Fusion, Parallels) !!!
+  #config.vm.provider "vmware_fusion"
+  
+  ## VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = 2048
+    #vb.memory = 3072
+    #vb.memory = 4096
+    vb.cpus = 1
+    ## HDD cache off
+    vb.customize [
+      "storagectl", :id, 
+      "--name", "SATA Controller", 
+      "--hostiocache", "off"
+    ]
+    ## Delete the cd drive (??? floppy disk???)
+    #vb.customize [
+    #  'storageattach', :id,
+    #  '--storagectl', 'IDE',
+    #  '--type", "dvddrive',
+    #  '--medium', 'none',
+    #  '--port', 1,
+    #  '--device', 0
+    #]
+  end
+  
+  
+  
+  ## Multiple machines (app1, app2)
+  ## https://peteris.rocks/blog/vagrantfile-for-linux/
+  
+  
+  
+  ## Execute script as Root user
+  ## https://www.vagrantup.com/intro/getting-started/provisioning.html
+  config.vm.provision :shell, path: "config/lamp.sh"
+  
+  ## Execute script as Vagrant user
+  config.vm.provision :shell, privileged: false, inline: "/bin/bash --login /vagrant/config/vagrant.sh"
+  #$script = "/bin/bash --login /vagrant/config/vagrant.sh"
+  #config.vm.provision :shell, privileged: false, inline: $script
+  
+  
+  
+  ## Shell inline command example
+  #config.vm.provision :shell, inline: "apt update"
+
+end

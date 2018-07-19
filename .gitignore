@@ -1,0 +1,13 @@
+# Ignore generated directories and files
+vagrant/.vagrant/
+**.box
+
+# Ignore system files
+.DS_Store
+
+# Ignore IDEs files
+.ftpsync_settings   # Brackets > FTP Sync
+.idea/              # PhpStorm
+nbproject/          # Netbeans
+
+# Ignore configuration files that may contain sensitive information
