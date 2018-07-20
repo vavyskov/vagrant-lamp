@@ -18,20 +18,17 @@ POSTGRES_ROOT_PASSWORD=postgres
 
 
 
-## Vagrant user workspace
-WORKSPACE=/home/vagrant/workspace
-PUBLIC=$WORKSPACE/public
-PRIVATE=$WORKSPACE/private
+## Vagrant user
+mkdir -p /home/vagrant/workspace/public
+mkdir -p /home/vagrant/workspace/private
 
-mkdir -p $PUBLIC
-mkdir -p $PRIVATE
-echo "Public folder <a href='info.php'>PHP info</a> | <a href='db'>DB admin</a>" > $PUBLIC/index.html
-echo '<?php
-  $cmd = "cat /etc/*-release";
-  exec($cmd, $version);
-  echo "<center>" . $version[0] . "<center>";
-  phpinfo();
-  ' > $PUBLIC/info.php
+#echo "Public folder <a href='info.php'>PHP info</a> | <a href='db'>DB admin</a>" > /home/vagrant/workspace/public/index.html
+#echo '<?php
+#  $cmd = "cat /etc/*-release";
+#  exec($cmd, $version);
+#  echo "<center>" . $version[0] . "<center>";
+#  phpinfo();
+#  ' > /home/vagrant/workspace/public/info.php
 
 
 
