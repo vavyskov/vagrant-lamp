@@ -38,6 +38,7 @@ echo '<?php
 ## Add user (password: user)
 useradd user -p user -m -s /bin/bash
 mkdir -p /home/user/workspace/public
+mkdir -p /home/user/workspace/private
 chown -R user:user /home/user/workspace
 
 
