@@ -60,7 +60,7 @@ apt-get update
 apt-get upgrade -y
 
 ## Certificates
-apt install -y ca-certificates
+apt install -y ca-certificates openssl
 
 ## Language
 apt install -y locales
