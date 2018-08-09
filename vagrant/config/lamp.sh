@@ -291,3 +291,10 @@ service mongodb start
 #apt-get autoclean
 #apt-get -y autoremove
 #rm -rf /var/lib/apt/lists/*
+
+
+## -----------------------------------------------------------------------------
+
+## Fix disk fragmentation (increases compression efficiency)
+#sudo dd if=/dev/zero of=/EMPTY bs=1M
+#sudo rm -f /EMPTY
