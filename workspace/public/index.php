@@ -118,7 +118,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
         
         <tr>
-          <td>SSH</td>
+          <td>??? SSH</td>
           <td>
             <?php echo (exec('ssh -V') ? exec('ssh -V') : $na); ?>
           </td>
@@ -137,7 +137,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
         
         <tr>
-          <td>Composer</td>
+          <td>??? Composer</td>
           <td>
             <?php
               if (exec('composer --version')) {
@@ -170,7 +170,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             "SQLite3" => "sqlite3",
             "GD" => "gd",
             "Multibyte String" => "mbstring",
-            "OPcache" => "opcache",
+            "??? OPcache" => "opcache",
             "XML" => "xml",
             "cURL" => "curl",        
             "Zip" => "zip",
