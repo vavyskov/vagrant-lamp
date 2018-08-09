@@ -212,11 +212,11 @@ cp -r /vagrant/config/db /var/www/
 
 ## -----------------------------------------------------------------------------
 
-## Development
+## Git
+apt install -y git
 
 ## Composer
-apt install -y git composer
-
+apt install -y composer
 
 
 ## GLOBAL Drush (variant A)
