@@ -4,29 +4,39 @@
 # The "2" in Vagrant.configure set the Vagrant configuration version
 Vagrant.configure("2") do |config|
   
-  
-  
   ## https://docs.vagrantup.com
   ## https://www.engineyard.com/blog/building-a-vagrant-box-from-start-to-finish
   ## https://technology.amis.nl/2017/10/19/create-debian-vm-with-docker-host-using-vagrant-automatically-include-guest-additions/
-
+  ## https://www.vagrantup.com/intro/getting-started/provisioning.html
   
   ## Sources (not required for vagrantup.com)
   #config.vm.box_url = "http://files.vagrantup.com/customBox.box"
   #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
   #config.vm.box_url = "file:///opt/vagrant/boxes/customBox.box"
-  
-  ## Box (required)
-  ## https://app.vagrantup.com
-  ## https://app.vagrantup.com/debian
-  ## https://app.vagrantup.com/centos
-  config.vm.box = "debian/contrib-stretch64"
-  #config.vm.box = "vavyskov/lamp"
-  
 
   
   
-  config.vm.hostname = "lamp"
+  ## Box (required)
+#  config.vm.box = "debian/contrib-stretch64" ## Enable when do not use "Template"
+
+  config.vm.box = "vavyskov/lamp" ## "Template"
+   
+  ## Execute shell script as Root user
+#  config.vm.provision :shell, path: "config/lamp.sh" ## Enable when do not use "Template"
+  
+  ## Execute shell script as Vagrant user
+#  config.vm.provision :shell, privileged: false, inline: "/bin/bash --login /vagrant/config/vagrant.sh"  ## Enable when do not use "Template"
+
+  
+  
+  #$script = "/bin/bash --login /vagrant/config/vagrant.sh"
+  #config.vm.provision :shell, privileged: false, inline: $script
+  
+  ## Shell inline command example
+  #config.vm.provision :shell, inline: "apt update"
+  
+  ## Hostname
+  config.vm.hostname = "lamp.example.com"
   
   
   
@@ -111,21 +121,5 @@ Vagrant.configure("2") do |config|
   ## Multiple machines (app1, app2)
   ## https://www.vagrantup.com/docs/multi-machine/
   ## https://peteris.rocks/blog/vagrantfile-for-linux/
-  
-  
-  
-  ## Execute script as Root user
-  ## https://www.vagrantup.com/intro/getting-started/provisioning.html
-  config.vm.provision :shell, path: "config/lamp.sh"
-  
-  ## Execute script as Vagrant user
-  config.vm.provision :shell, privileged: false, inline: "/bin/bash --login /vagrant/config/vagrant.sh"
-  #$script = "/bin/bash --login /vagrant/config/vagrant.sh"
-  #config.vm.provision :shell, privileged: false, inline: $script
-  
-  
-  
-  ## Shell inline command example
-  #config.vm.provision :shell, inline: "apt update"
 
 end
