@@ -195,7 +195,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
     </footer>
 
     <script>
-      const success = document.querySelectorAll(".fa-check");
+      /*const success = document.querySelectorAll(".fa-check");
 
       function color() {
         success.forEach(item => item.classList.add('text-success'));
@@ -203,7 +203,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
 
       window.onload = function () {
         color();
-      };
+      };*/
     </script>
   </body>
 
