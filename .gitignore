@@ -6,8 +6,8 @@ vagrant/.vagrant/
 .DS_Store
 
 # Ignore IDEs files
-.ftpsync_settings   # Brackets > FTP Sync
-.idea/              # PhpStorm
-nbproject/          # Netbeans
+.ftpsync_settings
+.idea/
+nbproject/
 
 # Ignore configuration files that may contain sensitive information
