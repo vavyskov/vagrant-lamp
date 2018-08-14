@@ -29,4 +29,5 @@ Development:
 - Drupal console
 
 > Fixme: **phpMyAdmin** JavaScript error in Google Chrome
+
 > ToDo: enable to create **new database**
