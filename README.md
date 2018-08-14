@@ -27,3 +27,5 @@ Development:
 - Composer
 - Drush
 - Drupal console
+
+> Fixme: **phpMyAdmin** JavaScript error in Google Chrome
