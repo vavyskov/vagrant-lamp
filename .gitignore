@@ -1,13 +1,15 @@
 # Ignore generated directories and files
-vagrant/.vagrant/
+**.vagrant/
 **.box
 
 # Ignore system files
 .DS_Store
 
 # Ignore IDEs files
-.ftpsync_settings
 .idea/
 nbproject/
 
 # Ignore configuration files that may contain sensitive information
+vagrant/database/*
+!vagrant/database/default/
+.ftpsync_settings

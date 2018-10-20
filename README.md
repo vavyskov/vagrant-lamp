@@ -1,33 +1,169 @@
 # vagrant-lamp
 
-Debian LAMP (Linux, Apache, MariaDB, PHP) stack
+LAMP stack (Debian, Apache, MariaDB, PHP, PhpMyAdmin, MailDev)
 
 Operatin system:
-- Debian
+- **Debian**
 
 Web server:
-- Apache
-- Node.js
+- **Apache**
+- **Node.js**
 
 Programming language:
-- PHP
+- **PHP**
 
 Database:
 - SQLite
-- MariaDB
+- **MariaDB**
 - PostgreSQL
 - MongoDB
 
 Database management:
 - Adminer
-- PhpMyAdmin
+- **PhpMyAdmin**
 - PhpPgAdmin
 
+Package manager:
+- **npm**
+- pnpm
+- **yarn**
+
 Development:
-- Composer
+- **Composer**
 - Drush
 - Drupal console
 
-> Fixme: **phpMyAdmin** JavaScript error in Google Chrome
+## Requirements
+1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
+1. [Vagrant](https://www.vagrantup.com/)
+    - `vagrant-winnfsd` plugin (Windows only)
+    - `vagrant-bindfs` plugin
+    - **Windows note**: If your account folder name (C:\Users\account-folder-name\) contains non ASCII characters, before Vagrant instalation set custom Vagrant home path e.g.:
+        
+          setx VAGRANT_HOME "X:\my\vagrant\home\path"
+        
+1. [Git](https://git-scm.com/) (optional)
 
-> ToDo: enable to create **new database**
+## Usage
+
+1. Enable CPU virtualization technology in BIOS.
+
+    - Disable Hyper-V technology in operatin system (Windows only).
+      
+1. Download and extract ZIP file or clone the repository:
+
+        git clone https://github.com/vavyskov/vagrant-lamp.git
+
+1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
+
+        vagrant plugin install vagrant-winnfsd (Windows only)
+        vagrant plugin install vagrant-bindfs
+        vagrant up (reload, halt, destroy)
+             
+    Customization:
+        
+    - Distribution (only `symfony` or `lamp`):
+       
+          vagrant --dist=symfony up
+          vagrant --dist=symfony halt
+       
+      Note: if you use `--dist` option at start up, you have to use `--dist` options on each vagrant command.
+    
+    - Other examples:
+   
+          vagrant --name=project up
+          vagrant --dist=lamp --name=project --port=8080 --ip=192.168.33.10 up
+
+   Note: the custom options need to be specified before `up` command.
+
+1. Open the web browser:
+
+    **Web**:
+    - URL: `localhost` or `192.168.33.10`
+    - Edit the local directory `www` as you needed
+
+    **PhpMyAdmin**:
+    - URL: `localhost/phpmyadmin` or `192.168.33.10/phpmyadmin`
+    - Server: `localhost`
+	- User: `mariadb`
+	- Password: `mariadb`
+	- Database: `mariadb`
+	
+	**MailDev** displays sent emails:
+	- URL: `localhost:1080` or `192.168.33.10:1080`
+    - Open the terminal, navigate to the directory containing the file Vagrantfile and send a test e-mail:
+        
+          vagrant ssh
+          php /vagrant/test/send-mail.php 
+
+1. Optional configure your system `hosts` file:
+
+		192.168.33.10 devel.example.com
+
+	Path:
+    - Linux: `/etc/hosts`
+	- macOX: `/private/etc/hosts`
+	- Windows: `C:\Windows\System32\drivers\etc\hosts`
+
+1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run commands:
+
+        vagrant ssh
+        
+    Edit the local directory `www` or run terminal commands as you needed.
+
+1. The database is automatically restore and backup by using the triggers:
+
+    Restore: `vagrant up` (resume, reload)
+    
+    Backup: `vagrant halt` (suspend, destroy)
+
+1. Update box version
+
+    Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
+    
+    - check updates:
+
+            vagrant box outdated
+        
+    - box update:
+    
+            vagrant destroy
+            vagrant box update
+
+## Instalation scripts
+
+The folder "vagrant/install" contains several installation scripts:
+
+- **PHP** version
+
+      sudo /vagrant/install/php.sh 5.6
+      sudo /vagrant/install/php.sh 7.0
+      sudo /vagrant/install/php.sh 7.1
+      sudo /vagrant/install/php.sh 7.2 (default)
+      sudo /vagrant/install/php.sh 7.3
+
+- **PHP Intl** upgrades ICU in php-intl (it takes some time)
+
+      sudo /vagrant/install/php-intl.sh
+
+- **MariaDB** is enhanced replacement for MySQL
+
+      sudo /vagrant/install/mariadb.sh 10.1
+      sudo /vagrant/install/mariadb.sh 10.2
+      sudo /vagrant/install/mariadb.sh 10.3 (default)
+
+- **XDebug** is debugger and profiler tool for PHP
+
+      sudo /vagrant/install/xdebug.sh
+
+- **SQLite** stores the entire database as a single cross-platform file
+
+      sudo /vagrant/install/sqlite.sh
+
+- **PhpMyAdmin** allows MySQL administration over the web
+
+      sudo /vagrant/install/phpmyadmin.sh
+
+## Note
+
+- Skype (Windows): Go to Tools → Options → Advanced → Connections and uncheck the box use port 80 and 443 as alternative.
