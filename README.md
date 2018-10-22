@@ -70,15 +70,15 @@ Email testing:
         
     - Distribution (only `symfony` or `lamp`):
        
-          vagrant --dist=symfony up
-          vagrant --dist=symfony halt
+          vagrant --dist=lamp up
+          vagrant --dist=lamp halt
        
       Note: if you use `--dist` option at start up, you have to use `--dist` options on each vagrant command.
     
     - Other examples:
    
           vagrant --name=project up
-          vagrant --dist=lamp --name=project --port=8080 --ip=192.168.33.10 up
+          vagrant --dist=symfony --name=project --port=8080 --ip=192.168.33.10 up
 
    Note: the custom options need to be specified before `up` command.
 
@@ -138,9 +138,17 @@ Email testing:
 
 ## Instalation scripts
 
-The folder "vagrant/install" contains several installation scripts:
+The folder `vagrant/install` contains several installation scripts:
 
-- **PHP** version
+- **Apache** is a web server
+
+      sudo /vagrant/install/apache.sh
+
+- **Node.js** is a JavaScript run-time environment that executes JavaScript code outside of a browser
+
+      sudo /vagrant/install/nodejs.sh
+
+- **PHP** allows you to change PHP version
 
       sudo /vagrant/install/php.sh 5.6
       sudo /vagrant/install/php.sh 7.0
@@ -152,13 +160,7 @@ The folder "vagrant/install" contains several installation scripts:
 
       sudo /vagrant/install/php-intl.sh
 
-- **MariaDB** is enhanced replacement for MySQL
-
-      sudo /vagrant/install/mariadb.sh 10.1
-      sudo /vagrant/install/mariadb.sh 10.2
-      sudo /vagrant/install/mariadb.sh 10.3 (default)
-
-- **XDebug** is debugger and profiler tool for PHP
+- **XDebug** is a debugger and profiler tool for PHP
 
       sudo /vagrant/install/xdebug.sh
 
@@ -166,9 +168,44 @@ The folder "vagrant/install" contains several installation scripts:
 
       sudo /vagrant/install/sqlite.sh
 
+- **MariaDB** is an enhanced replacement for MySQL
+
+      sudo /vagrant/install/mariadb.sh 10.1
+      sudo /vagrant/install/mariadb.sh 10.2
+      sudo /vagrant/install/mariadb.sh 10.3 (default)
+
+- **PostgreSQL** is a object-relation database system
+
+      sudo /vagrant/install/postgresql.sh
+
+- **MongoDB** is a document-oriented database
+
+      sudo /vagrant/install/mongodb.sh
+
+- **Adminer** is an universal database management in a single PHP file
+
+      sudo /vagrant/install/adminer.sh
+
 - **PhpMyAdmin** allows MySQL administration over the web
 
       sudo /vagrant/install/phpmyadmin.sh
+   
+- **PhpPgAdmin** is a administration tool for PostgreSQL
+
+      sudo /vagrant/install/phpmyadmin.sh
+
+- **Image Tools** contains imagemagick (optipng, gifsicle, libjpeg-progs)
+
+      sudo /vagrant/install/image-tools.sh
+
+- **Drupal Tools** contains Drush and Drupal console
+
+      sudo /vagrant/install/drupal-tools.sh
+
+- **Email testing UI**
+
+      sudo /vagrant/install/maildev.sh (default)
+      sudo /vagrant/install/mailcatcher.sh
 
 ## Note
 
