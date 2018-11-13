@@ -19,9 +19,8 @@ source "$CURRENT_DIRECTORY/env.sh"
 bash "$CURRENT_DIRECTORY/debian.sh"
 
 ## Installation
-bash "$CURRENT_DIRECTORY/../install/apache.sh"
-bash "$CURRENT_DIRECTORY/../install/php.sh" 7.0
-bash "$CURRENT_DIRECTORY/../install/mariadb.sh" 10.1
-bash "$CURRENT_DIRECTORY/../install/phpmyadmin.sh"
 bash "$CURRENT_DIRECTORY/../install/nodejs.sh"
+bash "$CURRENT_DIRECTORY/../install/image-tools.sh"
+bash "$CURRENT_DIRECTORY/../install/mongodb.sh"
 bash "$CURRENT_DIRECTORY/../install/maildev.sh"
+#bash "$CURRENT_DIRECTORY/../install/browser-sync.sh"

@@ -7,7 +7,6 @@ Operatin system:
 
 Web server:
 - **Apache**
-- **Node.js**
 
 Programming language:
 - **PHP**
@@ -23,6 +22,9 @@ Database management:
 - **PhpMyAdmin**
 - PhpPgAdmin
 
+JavaScript runtime environment:
+- **Node.js**
+
 Package management:
 - PHP
   - **Composer**
@@ -32,23 +34,24 @@ Package management:
   - **yarn**
 
 Development:
-- Drush
-- Drupal console
+- BrowserSync
+- **Drush**
+- **Drupal console**
 
 Email testing:
 - **MailDev**
 - MailCatcher
 
 ## Requirements
-1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
-1. [Vagrant](https://www.vagrantup.com/)
-    - `vagrant-winnfsd` plugin (Windows only)
-    - `vagrant-bindfs` plugin
-    - **Windows note**: If your account folder name (C:\Users\account-folder-name\) contains non ASCII characters, before Vagrant instalation set custom Vagrant home path e.g.:
+1. [Vagrant](https://www.vagrantup.com/?target=_blank)
+    - Windows note: If your account folder name (C:\Users\account-folder-name\) contains **non ASCII characters**, before Vagrant instalation set custom Vagrant home path e.g.:
         
           setx VAGRANT_HOME "X:\my\vagrant\home\path"
-        
-1. [Git](https://git-scm.com/) (optional)
+
+1. [VirtualBox](https://www.virtualbox.org/?target=_blank)
+    - VirtualBox Extension Pack (optional)
+
+1. [Git](https://git-scm.com/?target=_blank) (optional)
 
 ## Usage
 
@@ -56,22 +59,22 @@ Email testing:
 
     - Disable Hyper-V technology in operatin system (Windows only).
       
-1. Download and extract ZIP file or clone the repository:
-
-        git clone https://github.com/vavyskov/vagrant-lamp.git
+1. Clone or download and extract [vagrant-lamp](https://github.com/vavyskov/vagrant-lamp/archive/master.zip?target=_blank) repository:
+        
+       git clone https://github.com/vavyskov/vagrant-symfony.git
 
 1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
 
-        vagrant plugin install vagrant-winnfsd (Windows only)
-        vagrant plugin install vagrant-bindfs
-        vagrant up (reload, halt, destroy)
+       vagrant plugin install vagrant-winnfsd (Windows only)
+       vagrant plugin install vagrant-bindfs
+       vagrant up (reload, halt, destroy)
              
     Customization:
         
-    - Distribution (only `symfony` or `lamp`):
+    - Distribution (only `symfony`, `lamp` or `node`):
        
-          vagrant --dist=lamp up
-          vagrant --dist=lamp halt
+          vagrant --dist=symfony up
+          vagrant --dist=symfony halt
        
       Note: if you use `--dist` option at start up, you have to use `--dist` options on each vagrant command.
     
@@ -86,7 +89,7 @@ Email testing:
 
     **Web**:
     - URL: `localhost` or `192.168.33.10`
-    - Edit the local directory `www` as you needed
+    - **Edit the local (host) directory** `www` as you needed
 
     **PhpMyAdmin**:
     - URL: `localhost/phpmyadmin` or `192.168.33.10/phpmyadmin`
@@ -111,10 +114,10 @@ Email testing:
 	- macOX: `/private/etc/hosts`
 	- Windows: `C:\Windows\System32\drivers\etc\hosts`
 
-1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run commands:
+1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
 
         vagrant ssh
-        
+
     Edit the local directory `www` or run terminal commands as you needed.
 
 1. The database is automatically restore and backup by using the triggers:
@@ -201,6 +204,12 @@ The folder `vagrant/install` contains several installation scripts:
 - **Drupal Tools** contains Drush and Drupal console
 
       sudo /vagrant/install/drupal-tools.sh
+
+- **BrowserSync** time-saving synchronised browser testing
+
+      sudo /vagrant/install/browser-sync.sh
+      
+  BrowserSync UI: `localhost:3001`
 
 - **Email testing UI**
 

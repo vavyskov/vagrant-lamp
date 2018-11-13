@@ -3,14 +3,16 @@
 
 
 
-## Customization
-vm_dist = 'lamp'
+## Default values
 vm_name = 'lamp'
-vm_ip = '192.168.33.10'
+vm_dist = 'lamp'
 vm_port = 80
+vm_ip = '192.168.33.10'
 
+
+
+## Optional arguments
 require 'getoptlong'
-
 opts = GetoptLong.new(
     [ '--dist', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--name', GetoptLong::OPTIONAL_ARGUMENT ],
@@ -19,14 +21,18 @@ opts = GetoptLong.new(
     [ '-v', '--version', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '-h', '--help', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--provision', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--debug', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--color', GetoptLong::OPTIONAL_ARGUMENT ],
 )
-
 opts.each do |opt, arg|
     case opt
         when '--dist'
             if arg == 'lamp'
                 vm_dist = 'lamp'
                 vm_name = 'lamp'
+            elsif arg == 'node'
+                vm_dist = 'node'
+                vm_name = 'node'
             else
                 vm_dist = 'symfony'
                 vm_name = 'symfony'
@@ -51,15 +57,15 @@ Vagrant.configure("2") do |config|
 
 
     ## Box (required) - Template
-    config.vm.box = "vavyskov/" + vm_dist
+    config.vm.box = "vavyskov/#{vm_dist}"
 
     ## Enable when do not use "Template"
 #    config.vm.box = "debian/contrib-stretch64"
-#    config.vm.provision :shell, path: "config/" + vm_dist ".sh"
+#    config.vm.provision :shell, path: "config/dist-#{vm_dist}.sh"
 
 
 
-    #config.vm.provision :shell, path: "config/" + vm_dist ".sh", :args => ["vagrant"]
+    #config.vm.provision :shell, path: "config/dist-#{vm_dist}.sh", :args => ["vagrant"]
 
     ## Hostname
     config.vm.hostname = "devel.example.com"
@@ -75,6 +81,11 @@ Vagrant.configure("2") do |config|
 
 
 
+    ## Boot timeout
+    #config.vm.boot_timeout = 600
+
+
+
     ## IP
     config.vm.network "private_network", ip: vm_ip
 
@@ -82,6 +93,9 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
     config.vm.network "forwarded_port", guest: 1025, host: 1025, host_ip: "127.0.0.1"
 
+    ## BrowserSync
+    config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 3001, host: 3001, host_ip: "127.0.0.1"
 
 
     ## Port forwarding with ports <= 1024 may not work.
@@ -122,28 +136,22 @@ Vagrant.configure("2") do |config|
         config.vm.network "forwarded_port", guest: 80, host: vm_port, host_ip: "127.0.0.1"
     end
 
-    #if Vagrant::Util::Platform.platform =~ /darwin/ then
-     if Vagrant::Util::Platform.darwin? then
+    ## Port forwarding
+    if Vagrant::Util::Platform.darwin? || Vagrant::Util::Platform.linux? then
+
+        Vagrant::Util::Platform.darwin? ? port_os = 'port-macos' : port_os = 'port-linux'
 
         ## Enable port forwarding on startup
-        config.trigger.after [:provision, :up, :reload] do |portup|
-            portup.info = "Enable port forwarding on startup..."
-            portup.run = {inline: "config/os-apple.sh portup"}
+        config.trigger.after [:up] do |portup|
+            portup.info = "Enable port forwarding on startup (may prompt for sudo password)..."
+            portup.run = {inline: "sudo sh config/#{port_os}.sh up"}
         end
 
         ## Disable port forwarding when shutting down
         config.trigger.before [:halt, :destroy] do |portdown|
-            portdown.info = "Disable port forwarding on shutdown..."
-            portdown.run = {inline: "config/os-apple.sh portdown"}
+            portdown.info = "Disable port forwarding on shutdown (may prompt for sudo password)..."
+            portdown.run = {inline: "sudo sh config/#{port_os}.sh down"}
         end
-
-    end
-
-    ## FixMe: Linux port forwarding
-    if Vagrant::Util::Platform.linux? then
-
-        ## Port forwarding ???
-
     end
 
 
@@ -241,12 +249,38 @@ Vagrant.configure("2") do |config|
 
 
 
+    ## HTTP Server
+    if vm_dist == 'node'
+        config.trigger.after [:up, :resume, :reload] do |srv|
+            srv.info = "Starting HTTP Server..."
+            srv.run_remote = {inline: "/vagrant/install/http-server.sh"}
+        end
+    end
+
+    ## FixMe: Error port 3000 "Cannot GET /" (port 3001 is OK)
+    ## BrowserSync
+#    if vm_dist == 'node'
+#        config.trigger.after [:up, :resume, :reload] do |sync|
+#            sync.info = "Starting BrowserSync..."
+#            sync.run_remote = {inline: "/vagrant/install/browser-sync.sh"}
+#        end
+#    end
+
+
+
+
+
+    ## Set vagrant login shell
+    config.vm.provision :shell do |shell|
+        shell.inline = "sudo chsh -s /bin/bash vagrant"
+    end
+
     ## Backup database
     config.trigger.before [:halt, :suspend, :destroy] do |backup|
         backup.info = "The database backup is in progress..."
         backup.run_remote = {inline: "/vagrant/config/db-backup.sh #{`hostname`}"}
     end
-
+  
     ## Restore database
     config.trigger.after [:up, :resume, :reload] do |restore|
         restore.info = "The database restore is in progress..."
@@ -260,30 +294,29 @@ Vagrant.configure("2") do |config|
     end
 
     ## Introduction
-    vm_port == 80 ? vm_port = '' : (vm_port = ':' + vm_port)
+    vm_port == 80 ? vm_port_info = '' : (vm_port_info = ':' + vm_port)
     config.vm.post_up_message = <<MSG
 -------------------------------------------------------------------------------
-Local #{vm_dist.upcase} development, accessible at IP 127.0.0.1#{vm_port} or #{vm_ip}
+Local #{vm_dist.upcase} development, accessible at IP 127.0.0.1#{vm_port_info} or #{vm_ip}
 
-Web:                 http://localhost#{vm_port}
-Database management: http://localhost#{vm_port}/#{vm_dist == 'lamp' ? 'phpmyadmin' : 'adminer'}
+Web:                 http://localhost#{vm_port_info}
+Database management: http://localhost#{vm_port_info}/#{vm_dist == 'lamp' ? 'phpmyadmin' : 'adminer'}
 E-mail testing UI:   http://localhost:1080
 -------------------------------------------------------------------------------
 MSG
 
     ## VirtualBox
-    config.vm.provider "virtualbox" do |vb|
+    config.vm.provider 'virtualbox' do |vb|
         vb.name = vm_name
         vb.cpus = 1
         vb.memory = 2048
-        ## HDD cache off !!!
         vb.customize [
-            "storagectl", :id,
-            "--name", "SATA Controller",
-            "--hostiocache", "off"
+            'storagectl', :id,
+            '--name', 'SATA Controller',
+            '--hostiocache', 'off'
         ]
         ## Fix slow DNS lookups
-        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     end
 
 end
