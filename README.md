@@ -61,7 +61,7 @@ Email testing:
       
 1. Clone or download and extract [vagrant-lamp](https://github.com/vavyskov/vagrant-lamp/archive/master.zip?target=_blank) repository:
         
-       git clone https://github.com/vavyskov/vagrant-symfony.git
+       git clone https://github.com/vavyskov/vagrant-lamp.git
 
 1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
 
@@ -73,8 +73,8 @@ Email testing:
         
     - Distribution (only `symfony`, `lamp` or `node`):
        
-          vagrant --dist=symfony up
-          vagrant --dist=symfony halt
+          vagrant --dist=lamp up
+          vagrant --dist=lamp halt
        
       Note: if you use `--dist` option at start up, you have to use `--dist` options on each vagrant command.
     
@@ -114,10 +114,10 @@ Email testing:
 	- macOX: `/private/etc/hosts`
 	- Windows: `C:\Windows\System32\drivers\etc\hosts`
 
-1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
+1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and for new Symfony project run commands:
 
         vagrant ssh
-
+        
     Edit the local directory `www` or run terminal commands as you needed.
 
 1. The database is automatically restore and backup by using the triggers:
@@ -154,9 +154,9 @@ The folder `vagrant/install` contains several installation scripts:
 - **PHP** allows you to change PHP version
 
       sudo /vagrant/install/php.sh 5.6
-      sudo /vagrant/install/php.sh 7.0
+      sudo /vagrant/install/php.sh 7.0 (default)
       sudo /vagrant/install/php.sh 7.1
-      sudo /vagrant/install/php.sh 7.2 (default)
+      sudo /vagrant/install/php.sh 7.2
       sudo /vagrant/install/php.sh 7.3
 
 - **PHP Intl** upgrades ICU in php-intl (it takes some time)
@@ -173,9 +173,9 @@ The folder `vagrant/install` contains several installation scripts:
 
 - **MariaDB** is an enhanced replacement for MySQL
 
-      sudo /vagrant/install/mariadb.sh 10.1
+      sudo /vagrant/install/mariadb.sh 10.1 (default)
       sudo /vagrant/install/mariadb.sh 10.2
-      sudo /vagrant/install/mariadb.sh 10.3 (default)
+      sudo /vagrant/install/mariadb.sh 10.3
 
 - **PostgreSQL** is a object-relation database system
 

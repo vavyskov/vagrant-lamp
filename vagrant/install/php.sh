@@ -69,10 +69,13 @@ apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring p
 
 
 
+## Time zone
+sed -i 's/;date.timezone =/date.timezone = "Europe\/Prague"/' /etc/php/$PHP_VERSION/cli/php.ini
+
 ## PHP configuration
 cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini
 [Time zone]
-date.timezone=Europe/Prague
+date.timezone="Europe/Prague"
 
 [Error reporting]
 log_errors=On
@@ -86,8 +89,8 @@ display_errors=Off
 ;opcache.huge_code_pages=1
 
 [Upload files]
-post_max_size=64M
-upload_max_filesize=32M
+post_max_size=256M
+upload_max_filesize=128M
 
 [Performance]
 memory_limit=256M
