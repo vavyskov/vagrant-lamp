@@ -4,7 +4,7 @@
 
 
 ## Default values
-vm_name = 'lamp'
+vm_name = 'LAMP'
 vm_dist = 'lamp'
 vm_port = 80
 vm_ip = '192.168.33.10'
